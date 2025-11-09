@@ -10,7 +10,7 @@ const io = new Server(server);
 
 const PORT = process.env.PORT || 3000;
 
-const clientPath = path.join(__dirname,  '..', 'client');
+const clientPath = path.join(__dirname, '..',  '..', 'client');
 app.use(express.static(clientPath));
 
 app.get('/', (req, res) => {
