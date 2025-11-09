@@ -1,0 +1,6 @@
+# Compiled TypeScript
+dist/
+
+# Dependencies
+node_modules/
+

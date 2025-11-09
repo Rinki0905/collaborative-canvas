@@ -1,0 +1,131 @@
+/* --- Global Styles --- */
+body {
+    margin: 0;
+    overflow: hidden; /* Prevent scrollbars */
+    /* Use a modern, system-native font stack */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+        Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; /* Make text look crisper */
+}
+
+/* --- Toolbar --- */
+.toolbar {
+    position: fixed;
+    top: 16px; /* A bit more space from the top */
+    left: 50%;
+    transform: translateX(-50%);
+    background: #ffffff;
+    border-radius: 12px; /* A bit rounder */
+    padding: 12px; /* More padding */
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    z-index: 10;
+    /* A softer, more modern shadow */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Toolbar Items (Labels, Buttons, Inputs) --- */
+.toolbar label {
+    font-size: 14px;
+    color: #555;
+    margin-right: -2px; /* Pull label closer to its input */
+}
+
+/* Style all buttons in the toolbar */
+.toolbar button {
+    background: transparent;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #333;
+    font-size: 14px;
+    /* This makes the size change smoothly */
+    transition: background-color 0.2s ease;
+}
+
+.toolbar button:hover {
+    background-color: #f4f4f5; /* Light gray hover */
+}
+
+/* This is the key for our "active" tool */
+.toolbar button.active {
+    background-color: #e4e4e7; /* Darker gray for active */
+    color: #000;
+}
+
+/* --- Input Elements --- */
+input[type="color"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: 50%; /* Make it a circle */
+    cursor: pointer;
+    overflow: hidden;
+}
+input[type="color"]::-webkit-color-swatch {
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+}
+input[type="color"]::-moz-color-swatch {
+    border: none;
+    border-radius: 50%;
+    padding: 0;
+}
+
+input[type="range"] {
+    cursor: pointer;
+    margin-left: 4px;
+}
+
+
+/* --- Canvas Styling (Unchanged) --- */
+#drawing-canvas {
+    display: block;
+    background: #f9f9f9;
+}
+
+#cursor-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+/* --- Add this at the end --- */
+
+/* --- Responsive Styles (for screens < 650px) --- */
+@media (max-width: 650px) {
+    .toolbar {
+        /* Allow the items to wrap to a new line */
+        flex-wrap: wrap;
+        /* Center the items when they wrap */
+        justify-content: center;
+        /* Reduce padding a bit */
+        padding: 8px;
+        top: 8px;
+        /* Allow it to be slightly wider */
+        width: 95%;
+    }
+
+    .toolbar label {
+        font-size: 12px;
+        margin-right: 0;
+    }
+
+    .toolbar button {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    input[type="range"] {
+        max-width: 80px; /* Stop the slider from being too long */
+    }
+}
