@@ -2,7 +2,7 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import path from 'path';
-import { addAction, getHistory, DrawAction, undo, redo } from './drawing-state'; // Import our new state manager
+import { addAction, getHistory, DrawAction, undo, redo } from './drawing-state'; 
 
 const app = express();
 const server = http.createServer(app);
@@ -10,7 +10,7 @@ const io = new Server(server);
 
 const PORT = process.env.PORT || 3000;
 
-const clientPath = path.join(__dirname, '..', '..', 'client');
+const clientPath = path.join(__dirname,  '..', 'client');
 app.use(express.static(clientPath));
 
 app.get('/', (req, res) => {
@@ -37,7 +37,6 @@ io.on('connection', (socket) => {
 
   // --- 3. Listen for cursor movement ---
   socket.on('cursor:move', (data: { x: number; y: number }) => {
-    // Broadcast cursor position to everyone ELSE, including the user's ID
     socket.broadcast.emit('cursor:move', {
       ...data,
       userId: socket.id,
@@ -45,7 +44,6 @@ io.on('connection', (socket) => {
 
     socket.on('canvas:undo', () => {
     if (undo()) { // Call our undo function
-        // Success! Broadcast the *entire updated history* to ALL clients
         io.emit('canvas:load', getHistory());
     }
   });
@@ -53,7 +51,6 @@ io.on('connection', (socket) => {
   // --- 6. NEW: Handle Redo Request ---
   socket.on('canvas:redo', () => {
     if (redo()) { // Call our redo function
-        // Success! Broadcast the *entire updated history* to ALL clients
         io.emit('canvas:load', getHistory());
     }
   });
@@ -61,7 +58,6 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     console.log(`User disconnected: ${socket.id}`);
-    // Broadcast a message so clients can remove this user's cursor
     socket.broadcast.emit('user:disconnect', socket.id);
   });
 });

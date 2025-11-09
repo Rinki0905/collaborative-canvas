@@ -4,7 +4,7 @@ This is a submission for the real-time drawing application assignment. It featur
 
 Built with Node.js, Express, Socket.io, and Vanilla JS/HTML Canvas.
 
-## 🚀 Core Features
+##  Core Features
 
 * **Real-Time Drawing:** Strokes appear on all clients' screens instantly.
 * **Live Cursors:** See where other users are pointing in real-time.
@@ -12,7 +12,7 @@ Built with Node.js, Express, Socket.io, and Vanilla JS/HTML Canvas.
 * **Global Undo/Redo:** Any user can undo or redo an action for *all* connected users.
 * **Tools:** Includes a brush, eraser, color picker, and stroke width slider.
 
-## 🛠️ Setup & Run
+##  Setup & Run
 
 Follow these steps to run the project locally.
 
@@ -36,7 +36,7 @@ Follow these steps to run the project locally.
 4.  **View the application:**
     Open your browser and go to `http://localhost:3000`.
 
-## 🧪 How to Test (Multiple Users)
+##  How to Test (Multiple Users)
 
 To test the collaborative features, simply open `http://localhost:3000` in two or more separate browser windows (or incognito tabs).
 
@@ -44,11 +44,11 @@ To test the collaborative features, simply open `http://localhost:3000` in two o
 * Move your mouse in one window and see the cursor appear in the other.
 * Click "Undo" in one window and watch the last stroke disappear from both.
 
-## ⏱️ Time Spent
+##  Time Spent
 
 * **Total Time:** [Estimate your total hours, e.g., "Approx. 10 hours"]
 
-## ⚠️ Known Limitations / Bugs
+## Known Limitations / Bugs
 
 * [Be honest here. e.g., "Eraser can feel slightly delayed on high-latency connections."]
 * [e.g., "Cursor animation loop runs even when the tab is not active."]

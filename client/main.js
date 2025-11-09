@@ -20,14 +20,14 @@ if (!ctx || !cursorCtx || !colorPicker || !widthPicker || !brushBtn || !eraserBt
 
 // --- Drawing State ---
 let isDrawing = false;
-let currentPath = []; // Stores points for the current path
+let currentPath = []; 
 let currentTool = 'brush';
 let currentColor = colorPicker.value;
 let currentWidth = widthPicker.value;
 
-// --- Cursor State (New) ---
-const otherUsers = new Map(); // Stores { userId: { x, y, color } }
-const userColors = {}; // Cache colors for user IDs
+// --- Cursor State  ---
+const otherUsers = new Map(); 
+const userColors = {}; 
 const aColors = ['#FF6633', '#FFB399', '#FF33FF', '#FFFF99', '#00B3E6', '#E6B333', '#3366E6', '#999966'];
 const getUserColor = (userId) => {
     if (!userColors[userId]) {
@@ -37,20 +37,17 @@ const getUserColor = (userId) => {
 };
 
 // --- Tool Event Listeners ---
-// --- Tool Event Listeners ---
 colorPicker.addEventListener('input', (e) => (currentColor = e.target.value));
 widthPicker.addEventListener('input', (e) => (currentWidth = e.target.value));
 
 brushBtn.addEventListener('click', () => {
     currentTool = 'brush';
-    // Add 'active' class to brush, remove from eraser
     brushBtn.classList.add('active');
     eraserBtn.classList.remove('active');
 });
 
 eraserBtn.addEventListener('click', () => {
     currentTool = 'eraser';
-    // Add 'active' class to eraser, remove from brush
     eraserBtn.classList.add('active');
     brushBtn.classList.remove('active');
 });
@@ -74,7 +71,7 @@ function resizeCanvas() {
     cursorCanvas.width = window.innerWidth; // Resize cursor canvas too
     cursorCanvas.height = window.innerHeight; // Resize cursor canvas too
     
-    // Redraw history on resize (optional but good)
+    // Redraw history on resize
     socket.emit('request:history'); // We'll add this to the server
 }
 window.addEventListener('resize', resizeCanvas);
@@ -103,9 +100,7 @@ function drawPath(action) {
     ctx.closePath();
 }
 
-// Called when WE start drawing
 // --- Drawing Functions ---
-// (REPLACE your old startDrawing, draw, and stopDrawing functions with these)
 
 function handleDrawStart(x, y) {
     isDrawing = true;
@@ -134,21 +129,18 @@ function handleDrawStop() {
     // --- EMIT THE COMPLETE ACTION ---
     if (currentPath.length > 1) {
         socket.emit('draw:action', {
-            id: `${socket.id}-${Date.now()}`, // Simple unique ID
+            id: `${socket.id}-${Date.now()}`, 
             tool: currentTool,
             color: currentColor,
             lineWidth: currentWidth,
             points: currentPath,
         });
     }
-    currentPath = []; // Clear for next path
+    currentPath = []; 
 }
 
 // --- Local Mouse Listeners ---
-// --- Local Input Listeners (Mouse + Touch) ---
-// (REPLACE your old 'Local Mouse Listeners' section with this)
 
-// We need the canvas position for calculating touch coordinates
 let canvasRect = canvas.getBoundingClientRect();
 window.addEventListener('resize', () => {
     canvasRect = canvas.getBoundingClientRect();
@@ -190,29 +182,26 @@ canvas.addEventListener('touchcancel', handleDrawStop);
 
 // --- Cursor Tracking (New) ---
 document.addEventListener('mousemove', (e) => {
-    // Send our cursor position (throttling is recommended here, but skipped for simplicity)
     socket.emit('cursor:move', { x: e.pageX, y: e.pageY });
 });
 
-// --- Animation Loop for Cursors (New) ---
 function drawCursors() {
-    // Clear only the cursor canvas
     cursorCtx.clearRect(0, 0, cursorCanvas.width, cursorCanvas.height);
     
     for (const [userId, userData] of otherUsers.entries()) {
         const color = getUserColor(userId);
         cursorCtx.fillStyle = color;
         cursorCtx.beginPath();
-        cursorCtx.arc(userData.x, userData.y, 5, 0, Math.PI * 2); // Draw a circle
+        cursorCtx.arc(userData.x, userData.y, 5, 0, Math.PI * 2);
         cursorCtx.fill();
         
         cursorCtx.font = '12px Arial';
         cursorCtx.fillText(userId.substring(0, 5), userData.x + 10, userData.y + 5);
     }
     
-    requestAnimationFrame(drawCursors); // Loop
+    requestAnimationFrame(drawCursors); 
 }
-requestAnimationFrame(drawCursors); // Start the loop
+requestAnimationFrame(drawCursors); 
 
 
 // --- SOCKET.IO LISTENERS (Receiving from server) ---
@@ -224,9 +213,7 @@ socket.on('connect', () => {
 // 1. Load the entire history
 socket.on('canvas:load', (history) => {
     console.log('Loading history...', history.length, 'actions');
-    // Clear our local canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // Redraw every path from history
     for (const action of history) {
         drawPath(action);
     }
@@ -234,8 +221,8 @@ socket.on('canvas:load', (history) => {
 
 // 2. Listen for a new action from someone else
 socket.on('draw:action', (action) => {
-    // console.log('Receiving new action');
-    drawPath(action); // Draw the new path
+   
+    drawPath(action); 
 });
 
 // 3. Listen for other cursors
@@ -251,5 +238,5 @@ socket.on('user:disconnect', (userId) => {
 // This is for our resize function
 socket.on('disconnect', () => {
     console.log('Socket disconnected');
-    otherUsers.clear(); // Clear all cursors
+    otherUsers.clear(); 
 });
